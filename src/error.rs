@@ -1,11 +1,13 @@
 use std::io;
 
-use derive_more::From;
+use derive_more::{Display, From};
 
-pub type Result<T> = std::result::Result<T, Error>;
-
-#[derive(Debug, From)]
+#[derive(Display, Debug, From)]
 pub enum Error {
     #[from]
-    IO(io::Error),
+    #[display("IO error: {_0}")]
+    Io(io::Error),
 }
+
+impl std::error::Error for Error {}
+
