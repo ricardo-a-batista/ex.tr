@@ -1,5 +1,6 @@
+pub mod controller;
 pub mod error;
+pub mod infra;
+pub mod instrument;
 
-pub use self::error::Error;
-
-pub type Result<T> = std::result::Result<T, Error>;
+pub use self::error::{Error, Result};
