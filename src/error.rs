@@ -1,13 +1,27 @@
 use std::io;
 
-use derive_more::{Display, From};
+use axum::{http::StatusCode, response::IntoResponse};
+use derive_more::From;
 
-#[derive(Display, Debug, From)]
+pub type Result<T> = std::result::Result<T, Error>;
+
+#[derive(Debug, From)]
 pub enum Error {
     #[from]
-    #[display("IO error: {_0}")]
-    Io(io::Error),
+    IO(io::Error),
+
+    #[from]
+    Sql(sqlx::Error),
+
+    #[from]
+    Migrator(sqlx::migrate::MigrateError),
+
+    #[from]
+    Template(tera::Error),
 }
 
-impl std::error::Error for Error {}
-
+impl IntoResponse for Error {
+    fn into_response(self) -> axum::response::Response {
+        (StatusCode::INTERNAL_SERVER_ERROR, format!("{:?}", self)).into_response()
+    }
+}
