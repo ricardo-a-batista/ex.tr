@@ -17,13 +17,13 @@ COPY migrations ./migrations
 RUN cargo build --release
 
 # Use a minimal base image to run the application
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 # Copy the build artifact from the builder stage
 COPY --from=builder /usr/src/expenses_tracker/target/release/expenses_tracker /usr/local/bin/expenses_tracker
 
 # Copy statics
-COPY statics /usr/local/bin/expenses_tracker/statics
+COPY statics /usr/local/bin/statics
 
 # Expose the application port
 EXPOSE 3000
