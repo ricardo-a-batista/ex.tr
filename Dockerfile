@@ -14,7 +14,7 @@ COPY src ./src
 COPY migrations ./migrations
 
 # Build the application in release mode
-RUN cargo build --release
+RUN RUSTFLAGS="--cfg tokio_unstable" cargo build --release
 
 # Use a minimal base image to run the application
 FROM debian:bookworm-slim
