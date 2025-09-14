@@ -23,7 +23,10 @@ FROM debian:bookworm-slim
 COPY --from=builder /usr/src/expenses_tracker/target/release/expenses_tracker /usr/local/bin/expenses_tracker
 
 # Copy statics
-COPY statics /usr/local/bin/statics
+COPY statics ./statics
+
+# Copy templates folder
+COPY templates ./templates
 
 # Expose the application port
 EXPOSE 3000
