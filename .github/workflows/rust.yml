@@ -19,17 +19,24 @@ jobs:
     - name: Get rustc version
       id: rustver
       run: echo "rustc=$(rustc -V)" >> "$GITHUB_OUTPUT"
-    - name: Cache Cargo (registry, git, target)
+    - name: Cache Cargo registry+git
       uses: actions/cache@v4
       with:
         path: |
           ~/.cargo/registry/index/
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
-          target
-        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ steps.rustver.outputs.rustc }}
+        key: ${{ runner.os }}-cargo-sources-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: |
-          ${{ runner.os }}-cargo-
+          ${{ runner.os }}-cargo-sources-
+
+    - name: Cache Cargo target
+      uses: actions/cache@v4
+      with:
+        path: target
+        key: ${{ runner.os }}-cargo-target-${{ hashFiles('**/Cargo.lock') }}-${{ steps.rustver.outputs.rustc }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-target-
     - name: Build
       run: cargo build --verbose
     - name: Run tests
