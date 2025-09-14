@@ -1,4 +1,4 @@
-use tracing_subscriber::prelude::*;
+use tracing_subscriber::{prelude::*, util::SubscriberInitExt};
 
 pub fn init() {
     let console_layer = console_subscriber::ConsoleLayer::builder().spawn();
@@ -7,5 +7,6 @@ pub fn init() {
     tracing_subscriber::registry()
         .with(console_layer)
         .with(fmt_layer)
-        .init();
+        .try_init()
+        .ok();
 }
