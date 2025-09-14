@@ -10,6 +10,9 @@ COPY Cargo.toml Cargo.lock ./
 # Copy the source code
 COPY src ./src
 
+# Copy database migrations
+COPY migrations ./migrations
+
 # Build the application in release mode
 RUN cargo build --release
 
@@ -18,6 +21,9 @@ FROM debian:buster-slim
 
 # Copy the build artifact from the builder stage
 COPY --from=builder /usr/src/expenses_tracker/target/release/expenses_tracker /usr/local/bin/expenses_tracker
+
+# Copy statics
+COPY statics /usr/local/bin/expenses_tracker/statics
 
 # Expose the application port
 EXPOSE 3000
