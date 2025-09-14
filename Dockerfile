@@ -1,5 +1,5 @@
 # Use the official Rust image as the build environment
-FROM rust:1.89 as builder
+FROM rust:1.89 AS builder
 
 # Set the working directory
 WORKDIR /usr/src/expenses_tracker
